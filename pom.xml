@@ -14,6 +14,7 @@
 	<description>demo project for spring boot</description>
 	<properties>
 		<java.version>8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
 		<dependency>
