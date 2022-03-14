@@ -4,8 +4,12 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.com.jonatha.projeto.domain.Cliente;
 import br.com.jonatha.projeto.domain.ItemPedido;
 import br.com.jonatha.projeto.domain.PagamentoComBoleto;
 import br.com.jonatha.projeto.domain.Pedido;
@@ -13,6 +17,8 @@ import br.com.jonatha.projeto.domain.enums.EstadoPagamento;
 import br.com.jonatha.projeto.repositories.ItemPedidoRepository;
 import br.com.jonatha.projeto.repositories.PagamentoRepository;
 import br.com.jonatha.projeto.repositories.PedidoRepository;
+import br.com.jonatha.projeto.security.UserSS;
+import br.com.jonatha.projeto.services.exceptions.AuthorizationException;
 import br.com.jonatha.projeto.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -41,7 +47,7 @@ public class PedidoService {
 	
 	public Pedido find(Integer id) {
 		Optional<Pedido> pedido = repo.findById(id);
-
+		
 		return pedido.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
 	}
@@ -67,6 +73,16 @@ public class PedidoService {
 		itemPedidoRepository.saveAll(obj.getItens());
 		emailService.sendOrderConfirmationEmail(obj);
 		return obj;
+	}
+	
+	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		UserSS user = UserService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		Cliente cliente =  clienteService.find(user.getId());
+		return repo.findByCliente(cliente, pageRequest);
 	}
 
 }

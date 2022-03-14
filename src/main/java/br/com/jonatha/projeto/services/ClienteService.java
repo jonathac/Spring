@@ -15,11 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.jonatha.projeto.domain.Cidade;
 import br.com.jonatha.projeto.domain.Cliente;
 import br.com.jonatha.projeto.domain.Endereco;
+import br.com.jonatha.projeto.domain.enums.Perfil;
 import br.com.jonatha.projeto.domain.enums.TipoCliente;
 import br.com.jonatha.projeto.dto.ClienteDTO;
 import br.com.jonatha.projeto.dto.ClienteNewDTO;
 import br.com.jonatha.projeto.repositories.ClienteRepository;
 import br.com.jonatha.projeto.repositories.EnderecoRepository;
+import br.com.jonatha.projeto.security.UserSS;
+import br.com.jonatha.projeto.services.exceptions.AuthorizationException;
 import br.com.jonatha.projeto.services.exceptions.DataIntegratyException;
 import br.com.jonatha.projeto.services.exceptions.ObjectNotFoundException;
 
@@ -36,6 +39,13 @@ public class ClienteService {
 	private EnderecoRepository enderecoRepository;
 
 	public Cliente find(Integer id) {
+		
+		UserSS user = UserService.authenticated();
+		if (user==null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
+		
 		Optional<Cliente> cliente = repo.findById(id);
 
 		return cliente.orElseThrow(() -> new ObjectNotFoundException(
