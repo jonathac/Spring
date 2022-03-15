@@ -15,6 +15,7 @@ import br.com.jonatha.projeto.domain.Produto;
 import br.com.jonatha.projeto.dto.ProdutoDTO;
 import br.com.jonatha.projeto.resources.utils.URL;
 import br.com.jonatha.projeto.services.ProdutoService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/produtos")
@@ -23,12 +24,14 @@ public class ProdutoResource {
 	@Autowired
 	private ProdutoService service;
 
+	@ApiOperation("Realiza busca por ID")
 	@GetMapping("/{id}")
 	public ResponseEntity<Produto> find(@PathVariable Integer id) {
 		Produto obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 
+	@ApiOperation("Realiza busca dos pedidos com paginação")
 	@GetMapping
 	public ResponseEntity<Page<ProdutoDTO>> findPage(
 			@RequestParam(value="nome", defaultValue="") String nome, 
