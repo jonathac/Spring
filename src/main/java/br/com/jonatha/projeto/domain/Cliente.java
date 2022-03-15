@@ -32,6 +32,7 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	private boolean teste;
 	
 	@Column(unique = true)
 	private String email;
