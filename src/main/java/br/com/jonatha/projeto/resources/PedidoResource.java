@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.jonatha.projeto.domain.Pedido;
 import br.com.jonatha.projeto.services.PedidoService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -27,12 +28,14 @@ public class PedidoResource {
 	@Autowired
 	PedidoService pedidoService;
 	
+	@ApiOperation("Realiza busca por ID")
 	@GetMapping("/{id}")
 	public ResponseEntity<Pedido> find(@PathVariable Integer id) {
 		Pedido pedido = pedidoService.find(id);
 		return ResponseEntity.ok().body(pedido);
 	}
 	
+	@ApiOperation("Realiza inserimento de um novo pedido")
 	@PostMapping()
 	public ResponseEntity<Void> insert(@Valid @RequestBody Pedido obj) {
 		obj = pedidoService.insert(obj);
@@ -41,6 +44,7 @@ public class PedidoResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@ApiOperation("Realiza busca dos pedidos cadastrados com paginação")
 	@GetMapping()
 	public ResponseEntity<Page<Pedido>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page, 

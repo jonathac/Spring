@@ -25,6 +25,7 @@ import br.com.jonatha.projeto.domain.Cliente;
 import br.com.jonatha.projeto.dto.ClienteDTO;
 import br.com.jonatha.projeto.dto.ClienteNewDTO;
 import br.com.jonatha.projeto.services.ClienteService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/clientes")
@@ -33,12 +34,14 @@ public class ClienteResource {
 	@Autowired
 	ClienteService clienteService;
 
+	@ApiOperation("Faz a busca por ID")
 	@GetMapping("/{id}")
 	public ResponseEntity<Cliente> find(@PathVariable Integer id) {
 		Cliente cliente = clienteService.find(id);
 		return ResponseEntity.ok().body(cliente);
 	}
 
+	@ApiOperation("Inserir novo cliente")
 	@PostMapping()
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto) {
 		Cliente obj = clienteService.fromDTO(objDto);
@@ -47,6 +50,7 @@ public class ClienteResource {
 		return ResponseEntity.created(uri).build();
 	}
 
+	@ApiOperation("Atualiza cliente de acordo com ID")
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id) {
 		Cliente obj = clienteService.fromDTO(objDto);
@@ -55,6 +59,7 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build();
 	}
 
+	@ApiOperation("Deleção do cliente por ID")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Cliente> delete(@PathVariable Integer id) {
@@ -62,6 +67,7 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build();
 	}
 
+	@ApiOperation("Lista todos clientes")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping()
 	public ResponseEntity<List<ClienteDTO>> findAll() {
@@ -70,6 +76,7 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 
+	@ApiOperation("Realiza listagem com paginação")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/page")
 	public ResponseEntity<Page<ClienteDTO>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
