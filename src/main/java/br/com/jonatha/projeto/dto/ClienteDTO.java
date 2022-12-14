@@ -7,8 +7,8 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
-import br.com.jonatha.projeto.domain.Cliente;
-import br.com.jonatha.projeto.services.validation.ClienteUpdate;
+import br.com.jonatha.projeto.domain.Client;
+import br.com.jonatha.projeto.service.validation.ClienteUpdate;
 
 @ClienteUpdate
 public class ClienteDTO implements Serializable {
@@ -27,9 +27,9 @@ public class ClienteDTO implements Serializable {
 	public ClienteDTO() {
 	}
 
-	public ClienteDTO(Cliente obj) {
+	public ClienteDTO(Client obj) {
 		id = obj.getId();
-		nome = obj.getNome();
+		nome = obj.getName();
 		email = obj.getEmail();
 	}
 

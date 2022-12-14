@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import br.com.jonatha.projeto.domain.Categoria;
+import br.com.jonatha.projeto.domain.Category;
 
 public class CategoriaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -18,9 +18,9 @@ public class CategoriaDTO implements Serializable {
 	
 	public CategoriaDTO() {}
 
-	public CategoriaDTO(Categoria obj) {
+	public CategoriaDTO(Category obj) {
 		id = obj.getId();
-		nome = obj.getNome();
+		nome = obj.getName();
 	}
 	
 	public Integer getId() {

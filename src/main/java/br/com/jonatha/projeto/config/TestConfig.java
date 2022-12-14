@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import br.com.jonatha.projeto.services.DBService;
-import br.com.jonatha.projeto.services.EmailService;
-import br.com.jonatha.projeto.services.MockEmailService;
+import br.com.jonatha.projeto.service.DBService;
+import br.com.jonatha.projeto.service.EmailService;
+import br.com.jonatha.projeto.service.MockEmailService;
 
 @Configuration
 @Profile("test")
